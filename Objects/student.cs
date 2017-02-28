@@ -70,22 +70,6 @@ namespace University
         }
 
 
-
-
-        // public override int GetHashCode()
-        // {
-        //     return this.GetId().GetHashCode();
-        // }
-
-        public static void DeleteAll()
-        {
-            SqlConnection conn = DB.Connection();
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("DELETE FROM students;", conn);
-            cmd.ExecuteNonQuery();
-            conn.Close();
-        }
-
         public void Save()
         {
             SqlConnection connection = DB.Connection();
@@ -157,8 +141,14 @@ namespace University
             return foundStudent;
         }
 
-
-
+        public static void DeleteAll()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("DELETE FROM students;", conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
 
         public int GetId()
         {
