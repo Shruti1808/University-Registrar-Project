@@ -69,10 +69,9 @@ namespace University
             return StudentList;
         }
 
-        // SqlParameters idParam = new SqlParameters();
-        // idParam.ParameterName = "@StudentId";
-        // idParam.Value = this.GetId();
-        // cmd.Parameters.Add(idParam);
+
+
+
         // public override int GetHashCode()
         // {
         //     return this.GetId().GetHashCode();
@@ -85,6 +84,37 @@ namespace University
             SqlCommand cmd = new SqlCommand("DELETE FROM students;", conn);
             cmd.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public void Save()
+        {
+            SqlConnection connection = DB.Connection();
+            connection.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT into students(name, date, department_id) OUTPUT INSERTED.id VALUES (@Name, @Date, @DeptId);", connection);
+
+            SqlParameter studNameParam = new SqlParameter("@Name", this.GetName());
+            SqlParameter dateParam = new SqlParameter("@Date", this.GetDate());
+            SqlParameter deptidParam = new SqlParameter("@DeptId", this.GetDeptId());
+
+            cmd.Parameters.Add(studNameParam);
+            cmd.Parameters.Add(dateParam);
+            cmd.Parameters.Add(deptidParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while(rdr.Read())
+            {
+                this._id = rdr.GetInt32(0);
+            }
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if(connection != null)
+            {
+                connection.Close();
+            }
         }
 
 

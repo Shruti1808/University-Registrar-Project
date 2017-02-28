@@ -33,23 +33,23 @@ namespace University
             Assert.Equal(firstStudent, secondStudent);
         }
 
-        // [Fact]
-        // public void Test_Save_AssignsIdToObject()
-        // {
-        //   //Arrange
-        //
-        //   Student testStudent = new Student("Joe", "2-12-2012", 2);
-        //
-        //   //Act
-        //   testStudent.Save();
-        //   Student savedStudent = Student.GetAll()[0];
-        //
-        //   int result = savedStudent.GetId();
-        //   int testId = testStudent.GetId();
-        //
-        //   //Assert
-        //   Assert.Equal(testId, result);
-        // }
+        [Fact]
+        public void Test_Save_AssignsIdToObject()
+        {
+          //Arrange
+
+          Student testStudent = new Student("Joe", "2-12-2012", 2);
+
+          //Act
+          testStudent.Save();
+          Student savedStudent = Student.GetAll()[0];
+
+          int result = savedStudent.GetId();
+          int testId = testStudent.GetId();
+
+          //Assert
+          Assert.Equal(testId, result);
+        }
 
         public void Dispose()
         {
