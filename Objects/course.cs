@@ -167,50 +167,29 @@ namespace University
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT student_id FROM major_track WHERE course_id = @CourseId;", conn);
+            SqlCommand cmd = new SqlCommand("SELECT students.* FROM courses join major_track ON (courses.id = major_track.course_id) JOIN students ON (major_track.student_id = students.id) WHERE courses.id = @CourseId", conn);
 
-            SqlParameter courseIdParam = new SqlParameter("@CourseId", this.GetId());
+            SqlParameter courseIdParam = new SqlParameter("@CourseId", this.GetId().ToString());
             cmd.Parameters.Add(courseIdParam);
 
             SqlDataReader rdr = cmd.ExecuteReader();
 
-            List<int> StudentIds = new List<int> {};
-
-            while (rdr.Read())
-            {
-                int StudentId = rdr.GetInt32(0);
-                StudentIds.Add(StudentId);
-            }
-            if (rdr != null)
-            {
-                rdr.Close();
-            }
-
             List<Student> StudentList = new List<Student> {};
 
-
-            foreach (int StudentId in StudentIds)
-            {
-                SqlCommand studentQuery = new SqlCommand("SELECT * FROM students WHERE id = @StudentId;",  conn);
-                SqlParameter studentIdParam = new SqlParameter("@StudentId", StudentId);
-
-                studentQuery.Parameters.Add(studentIdParam);
-
-                SqlDataReader queryReader = studentQuery.ExecuteReader();
-                while (queryReader.Read())
+                while (rdr.Read())
                 {
-                    int matchStudentId = queryReader.GetInt32(0);
-                    string name = queryReader.GetString(1);
-                    string enrollDate = queryReader.GetString(2);
-                    int deptId = queryReader.GetInt32(3);
+                    int matchStudentId = rdr.GetInt32(0);
+                    string name = rdr.GetString(1);
+                    string enrollDate = rdr.GetString(2);
+                    int deptId = rdr.GetInt32(3);
                     Student newStudent = new Student(name, enrollDate, deptId, matchStudentId);
                     StudentList.Add(newStudent);
                 }
-                if (queryReader != null)
+
+                if (rdr != null)
                 {
-                    queryReader.Close();
+                    rdr.Close();
                 }
-            }
                 if (conn != null)
                 {
                     conn.Close();
