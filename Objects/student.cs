@@ -164,7 +164,7 @@ namespace University
 
         }
 
-        public static List<Course> GetCourses()
+        public List<Course> GetCourses()
         {
             SqlConnection conn = DB.Connection();
             conn.Open();

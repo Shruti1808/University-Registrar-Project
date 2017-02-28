@@ -106,7 +106,7 @@ namespace University
         public void Dispose()
         {
             Student.DeleteAll();
-
+            Course.DeleteAll();
         }
 
 
