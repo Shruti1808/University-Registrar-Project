@@ -62,6 +62,7 @@ namespace University
             Assert.Equal(testCourse,newCourse);
         }
 
+        [Fact]
         public void Test_AddStudent_AddStudentTOCourse()
         {
             Course testCourse = new Course("Psychobiology", 1, "PSC121");

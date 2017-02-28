@@ -169,7 +169,7 @@ namespace University
             SqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("SELECT  course_id from major_track WHERE student_id = @StudentId;",conn);
+            SqlCommand cmd = new SqlCommand("SELECT  course_id FROM major_track WHERE student_id = @StudentId;",conn);
 
             SqlParameter idParam = new SqlParameter("@StudentId", this.GetId());
             cmd.Parameters.Add(idParam);
@@ -192,7 +192,7 @@ namespace University
 
             foreach (int CourseId in CourseIds)
             {
-                SqlCommand courseQuery = new SqlCommand("SELECT * FROM courses WHERE id= @CourseId;", conn);
+                SqlCommand courseQuery = new SqlCommand("SELECT * FROM courses WHERE id = @CourseId;", conn);
                 SqlParameter courseIDParam = new SqlParameter("@CourseId", CourseId);
 
                 courseQuery.Parameters.Add(courseIDParam);
@@ -204,7 +204,7 @@ namespace University
                     string courseTitle = queryReader.GetString(1);
                     int deptId = queryReader.GetInt32(2);
                     string courseNumber = queryReader.GetString(3);
-                    Course newCourse = new Course (courseTitle, deptId, courseNumber, matchedCourseId);
+                    Course newCourse = new Course(courseTitle, deptId, courseNumber, matchedCourseId);
                     CourseList.Add(newCourse);
                 }
                 if (queryReader != null)
