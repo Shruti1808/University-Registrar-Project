@@ -51,11 +51,23 @@ namespace University
           Assert.Equal(testId, result);
         }
 
+        [Fact]
+        public void Test_FindReturnsSameObject()
+        {
+            Student newStudent = new Student("John","8-10-2009", 3);
+            newStudent.Save();
+
+            Student testStudent = Student.Find(newStudent.GetId());
+            Assert.Equal(testStudent,newStudent);
+        }
+
         public void Dispose()
         {
             Student.DeleteAll();
 
         }
+
+
 
 
 

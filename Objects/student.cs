@@ -117,6 +117,46 @@ namespace University
             }
         }
 
+        public static Student Find(int id)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM students WHERE id = @StudentId", conn);
+
+            SqlParameter idParam = new SqlParameter();
+            idParam.ParameterName = "@StudentId";
+            idParam.Value = id.ToString();
+            cmd.Parameters.Add(idParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            int foundStudentId = 0;
+            string foundName = null;
+            string foundDate = null;
+            int foundDeptId = 0;
+
+            while (rdr.Read())
+            {
+                foundStudentId = rdr.GetInt32(0);
+                foundName = rdr.GetString(1);
+                foundDate = rdr.GetString(2);
+                foundDeptId = rdr.GetInt32(3);
+            }
+            Student foundStudent = new Student(foundName, foundDate, foundDeptId, foundStudentId);
+
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+
+            return foundStudent;
+        }
+
 
 
 
