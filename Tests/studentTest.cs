@@ -52,7 +52,7 @@ namespace University
         }
 
         [Fact]
-        public void Test_FindReturnsSameObject()
+        public void Test_Find_ReturnsSameObject()
         {
             Student newStudent = new Student("John","8-10-2009", 3);
             newStudent.Save();
@@ -60,6 +60,48 @@ namespace University
             Student testStudent = Student.Find(newStudent.GetId());
             Assert.Equal(testStudent,newStudent);
         }
+
+
+        [Fact]
+        public void Test_AddCourse_AddCourseToStudent()
+        {
+            Student testStudent = new Student("John","8-10-2009", 3);
+            testStudent.Save();
+
+            Course testCourse =  new Course("Psychobiology", 1, "PSC121");
+            testCourse.Save();
+
+            Course testCourse2 = new Course("Psychobiology", 1, "PSC121");
+            testCourse2.Save();
+
+            testStudent.AddCourse(testCourse);
+            testStudent.AddCourse(testCourse2);
+
+            List<Course> testList = new List<Course> {testCourse, testCourse2};
+            List<Course> result = testStudent.GetCourses();
+
+            Assert.Equal(result, testList);
+        }
+
+        [Fact]
+        public void Test_GetCourses_RetrieveListOfAllCourses()
+        {
+            Student testStudent = new Student("John","8-10-2009", 3);
+            testStudent.Save();
+
+            Course testCourse =  new Course("Psychobiology", 1, "PSC121");
+            testCourse.Save();
+
+            Course testCourse2 = new Course("Psychobiology", 1, "PSC121");
+            testCourse2.Save();
+
+            testStudent.AddCourse(testCourse);
+            List<Course> savedCourses = testStudent.GetCourses();
+            List<Course> resultList = new List<Course> {testCourse};
+
+            Assert.Equal(savedCourses, resultList);
+        }
+
 
         public void Dispose()
         {

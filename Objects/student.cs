@@ -141,6 +141,85 @@ namespace University
             return foundStudent;
         }
 
+
+        public void AddCourse(Course newCourse)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd  = new SqlCommand("INSERT INTO major_track (student_id, course_id) VALUES (@StudentId, @CourseId);",conn);
+
+            SqlParameter studentParameter = new SqlParameter("@StudentId", this.GetId());
+            SqlParameter courseParameter = new SqlParameter("@CourseId", newCourse.GetId());
+
+            cmd.Parameters.Add(studentParameter);
+            cmd.Parameters.Add(courseParameter);
+
+            cmd.ExecuteNonQuery();
+
+            if (conn != null)
+            {
+                conn.Close();
+            }
+
+        }
+
+        public static List<Course> GetCourses()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT  course_id from major_track WHERE student_id = @StudentId;",conn);
+
+            SqlParameter idParam = new SqlParameter("@StudentId", this.GetId());
+            cmd.Parameters.Add(idParam);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<int> CourseIds = new List<int>{};
+
+            while(rdr.Read())
+            {
+                int CourseId = rdr.GetInt32(0);
+                CourseIds.Add(CourseId);
+            }
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+
+            List<Course> CourseList = new List<Course>{};
+
+            foreach (int CourseId in CourseIds)
+            {
+                SqlCommand courseQuery = new SqlCommand("SELECT * FROM courses WHERE id= @CourseId;", conn);
+                SqlParameter courseIDParam = new SqlParameter("@CourseId", CourseId);
+
+                courseQuery.Parameters.Add(courseIDParam);
+
+                SqlDataReader queryReader = courseQuery.ExecuteReader();
+                while(queryReader.Read())
+                {
+                    int matchedCourseId =  queryReader.GetInt32(0);
+                    string courseTitle = queryReader.GetString(1);
+                    int deptId = queryReader.GetInt32(2);
+                    string courseNumber = queryReader.GetString(3);
+                    Course newCourse = new Course (courseTitle, deptId, courseNumber, matchedCourseId);
+                    CourseList.Add(newCourse);
+                }
+                if (queryReader != null)
+                {
+                    queryReader.Close();
+                }
+            }
+            if (conn != null)
+            {
+                conn.Close();
+            }
+            return CourseList;
+        }
+
+
         public static void DeleteAll()
         {
             SqlConnection conn = DB.Connection();
