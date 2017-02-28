@@ -109,10 +109,6 @@ namespace University
             Course.DeleteAll();
         }
 
-
-
-
-
     }
 
 }

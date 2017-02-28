@@ -36,19 +36,19 @@ namespace University
         [Fact]
         public void Test_Save_AssignsIdToObject()
         {
-          //Arrange
+            //Arrange
 
-          Course testCourse = new Course("Psychobiology", 1, "PSC121");
+            Course testCourse = new Course("Psychobiology", 1, "PSC121");
 
-          //Act
-          testCourse.Save();
-          Course savedCourse = Course.GetAll()[0];
+            //Act
+            testCourse.Save();
+            Course savedCourse = Course.GetAll()[0];
 
-          int result = savedCourse.GetId();
-          int testId = testCourse.GetId();
+            int result = savedCourse.GetId();
+            int testId = testCourse.GetId();
 
-          //Assert
-          Assert.Equal(testId, result);
+            //Assert
+            Assert.Equal(testId, result);
         }
 
         [Fact]
@@ -62,9 +62,49 @@ namespace University
             Assert.Equal(testCourse,newCourse);
         }
 
+        public void Test_AddStudent_AddStudentTOCourse()
+        {
+            Course testCourse = new Course("Psychobiology", 1, "PSC121");
+            testCourse.Save();
+
+            Student testStudent1 = new Student("John","8-10-2009", 3);
+            testStudent1.Save();
+
+            Student testStudent2 = new Student("Joe","8-10-2006", 2);
+            testStudent2.Save();
+
+            testCourse.AddStudent(testStudent1);
+            testCourse.AddStudent(testStudent2);
+
+            List<Student> testList = new List<Student>{testStudent1,testStudent2};
+            List<Student> result = testCourse.GetStudents();
+
+            Assert.Equal(result,testList);
+        }
+
+        [Fact]
+        public void Test_GetStudents_ReturnTheListOfStudents()
+        {
+            Course testCourse = new Course("Psychobiology", 1, "PSC121");
+            testCourse.Save();
+
+            Student testStudent1 =  new Student("Joe", "23-06-2011",2);
+            testStudent1.Save();
+
+            Student testStudent2 = new Student("Joe", "23-06-2011",2);
+            testStudent2.Save();
+
+            testCourse.AddStudent(testStudent1);
+            List<Student> savedStudents = testCourse.GetStudents();
+            List<Student> resultList = new List<Student> {testStudent1};
+
+            Assert.Equal(savedStudents, resultList);
+        }
+
         public void Dispose()
         {
             Course.DeleteAll();
+            Student.DeleteAll();
 
         }
 
