@@ -1,0 +1,2 @@
+"SELECT students.*
+FROM courses join major_track ON (courses.id = major_track.course_id) JOIN students ON (major_track.student_id = students.id) WHERE courses.id = @CourseId", conn);
