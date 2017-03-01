@@ -80,7 +80,7 @@ namespace University
         }
 
         [Fact]
-       public void Test_Update_UpdateStudent()
+       public void Test_Update_UpdateCourse()
        {
            //Arrange
            string title = "Psychobiology";

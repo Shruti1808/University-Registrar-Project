@@ -62,6 +62,24 @@ namespace University
         }
 
         [Fact]
+       public void Test_Update_UpdateStudent()
+       {
+           //Arrange
+           string name = "Johnny";
+           Student testInput = new Student("Johnny","8-10-2009", 3);
+           testInput.Save();
+           string newName = ("Joey");
+
+           //Act
+           testInput.Update(newName);
+           string result = testInput.GetName();
+
+           //Assert
+           Assert.Equal(result, newName);
+       }
+
+
+        [Fact]
         public void Test_Delete_DeleteSingleStudent()
         {
           //Arrange
