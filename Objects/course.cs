@@ -197,6 +197,59 @@ namespace University
             return StudentList;
         }
 
+        public void Update(string newTitle)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("UPDATE courses SET title = @NewCourseTitle OUTPUT INSERTED.title WHERE id = @CourseId;", conn);
+
+            SqlParameter newTitleParameter = new SqlParameter();
+            newTitleParameter.ParameterName = "@NewCourseTitle";
+            newTitleParameter.Value = newTitle;
+            cmd.Parameters.Add(newTitleParameter);
+
+            SqlParameter idParameter = new SqlParameter();
+            idParameter.ParameterName = "@CourseId";
+            idParameter.Value = this.GetId();
+            cmd.Parameters.Add(idParameter);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                this._title = rdr.GetString(0);
+            }
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+        }
+
+
+        public void Delete()
+   {
+     SqlConnection conn = DB.Connection();
+     conn.Open();
+
+     SqlCommand cmd = new SqlCommand("DELETE FROM courses WHERE id = @CourseId; DELETE FROM major_track WHERE Course_id = @CourseId;", conn);
+     SqlParameter courseIdParameter = new SqlParameter();
+     courseIdParameter.ParameterName = "@CourseId";
+     courseIdParameter.Value = this.GetId();
+
+     cmd.Parameters.Add(courseIdParameter);
+     cmd.ExecuteNonQuery();
+
+     if (conn != null)
+     {
+       conn.Close();
+     }
+   }
+
         public static void DeleteAll()
         {
             SqlConnection conn = DB.Connection();

@@ -63,6 +63,41 @@ namespace University
         }
 
         [Fact]
+        public void Test_Delete_DeleteSingleCourse()
+        {
+          //Arrange
+          Course testInput = new Course("Psychobiology", 1, "PSC121");
+          testInput.Save();
+          Course testInput2 = new Course ("Psychobiology", 1, "PSC121");
+          testInput2.Save();
+
+          //Act
+          testInput.Delete();
+          List<Course> result = Course.GetAll();
+          List<Course> resultList = new List<Course> {testInput2};
+
+          Assert.Equal(result, resultList);
+        }
+
+        [Fact]
+       public void Test_Update_UpdateStudent()
+       {
+           //Arrange
+           string title = "Psychobiology";
+           Course testInput = new Course(title, 1, "PSC121");
+           testInput.Save();
+           string newTitle = ("Cognitive Neuroscience");
+
+           //Act
+           testInput.Update(newTitle);
+           string result = testInput.GetTitle();
+
+           //Assert
+           Assert.Equal(result, newTitle);
+       }
+
+
+        [Fact]
         public void Test_AddStudent_AddStudentTOCourse()
         {
             Course testCourse = new Course("Psychobiology", 1, "PSC121");
